@@ -4,12 +4,20 @@ require 'singleton'
 
 module Tobanjan
   module Choicer
+    def self.random_idx(list)
+      ::Random.rand(0..(list.size - 1))
+    end
+
+    def self.choice_from_list(list)
+      list[random_idx(list)]
+    end
+
     class FlattenChoicer
       include Singleton
 
       def choice_by_column_name!(column_name, candidates)
         min = candidates.map(&column_name).min
-        result = candidates.select{|candidate|candidate.send(column_name) == min}.sample
+        result = ::Tobanjan::Choicer.choice_from_list(candidates.select{|candidate|candidate.send(column_name) == min})
         result.send("increment_#{column_name}".to_sym, 1)
         result.elm
       end
