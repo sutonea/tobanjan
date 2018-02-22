@@ -20,7 +20,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+**example.rb**
+
+```ruby
+require 'bundler'
+Bundler.require
+require 'tobanjan'
+
+candidates = ::Tobanjan::CandidateList.create ["A", "B", "C"]
+list_choiced = []
+6.times do
+  list_choiced << candidates.choice!
+end
+puts list_choiced.sort.join
+```
+
+```bash
+$ ruby example.rb
+AABBCC
+```
 
 ## Development
 
