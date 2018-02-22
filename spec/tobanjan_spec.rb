@@ -7,32 +7,32 @@ RSpec.describe Tobanjan do
 
   describe Tobanjan::CandidateList do
 
-    let(:pokemon) {[:pikachu, :raichu, :dedenne]}
+    let(:members) {[:ishige, :tanaka, :yamane]}
 
     describe "#choice" do
-      subject(:candidate_list) { Tobanjan::CandidateList.create(pokemon) }
+      subject(:candidate_list) { Tobanjan::CandidateList.create(members) }
 
       it "回数が偏らない範囲で無作為に取り出す" do
         Tobanjan::Choicer.stub(:random_idx).and_return(0)
-        expect(candidate_list.choice!).to eq pokemon[0]
-        expect(candidate_list.choice!).to eq pokemon[1]
-        expect(candidate_list.choice!).to eq pokemon[2]
-        expect(candidate_list.choice!).to eq pokemon[0]
-        expect(candidate_list.choice!).to eq pokemon[1]
-        expect(candidate_list.choice!).to eq pokemon[2]
+        expect(candidate_list.choice!).to eq members[0]
+        expect(candidate_list.choice!).to eq members[1]
+        expect(candidate_list.choice!).to eq members[2]
+        expect(candidate_list.choice!).to eq members[0]
+        expect(candidate_list.choice!).to eq members[1]
+        expect(candidate_list.choice!).to eq members[2]
       end
     end
 
     describe "#choice_by_column_name" do
-      subject(:candidate_list) { Tobanjan::CandidateList.create(pokemon, [:count]) }
+      subject(:candidate_list) { Tobanjan::CandidateList.create(members, [:count]) }
       it "回数が偏らない範囲で無作為に取り出す" do
         Tobanjan::Choicer.stub(:random_idx).and_return(0)
-        expect(candidate_list.choice_by_column_name!(:count)).to eq pokemon[0]
-        expect(candidate_list.choice_by_column_name!(:count)).to eq pokemon[1]
-        expect(candidate_list.choice_by_column_name!(:count)).to eq pokemon[2]
-        expect(candidate_list.choice_by_column_name!(:count)).to eq pokemon[0]
-        expect(candidate_list.choice_by_column_name!(:count)).to eq pokemon[1]
-        expect(candidate_list.choice_by_column_name!(:count)).to eq pokemon[2]
+        expect(candidate_list.choice_by_column_name!(:count)).to eq members[0]
+        expect(candidate_list.choice_by_column_name!(:count)).to eq members[1]
+        expect(candidate_list.choice_by_column_name!(:count)).to eq members[2]
+        expect(candidate_list.choice_by_column_name!(:count)).to eq members[0]
+        expect(candidate_list.choice_by_column_name!(:count)).to eq members[1]
+        expect(candidate_list.choice_by_column_name!(:count)).to eq members[2]
       end
     end
 
