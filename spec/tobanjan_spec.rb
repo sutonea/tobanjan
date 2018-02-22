@@ -9,6 +9,20 @@ RSpec.describe Tobanjan do
 
     let(:pokemon) {[:pikachu, :raichu, :dedenne]}
 
+    describe "#choice" do
+      subject(:candidate_list) { Tobanjan::CandidateList.create(pokemon) }
+
+      it "回数が偏らない範囲で無作為に取り出す" do
+        Tobanjan::Choicer.stub(:random_idx).and_return(0)
+        expect(candidate_list.choice!).to eq pokemon[0]
+        expect(candidate_list.choice!).to eq pokemon[1]
+        expect(candidate_list.choice!).to eq pokemon[2]
+        expect(candidate_list.choice!).to eq pokemon[0]
+        expect(candidate_list.choice!).to eq pokemon[1]
+        expect(candidate_list.choice!).to eq pokemon[2]
+      end
+    end
+
     describe "#choice_by_column_name" do
       subject(:candidate_list) { Tobanjan::CandidateList.create(pokemon, [:count]) }
       it "回数が偏らない範囲で無作為に取り出す" do

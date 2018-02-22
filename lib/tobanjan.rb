@@ -4,6 +4,11 @@ require 'singleton'
 
 module Tobanjan
   module Choicer
+
+    def self.default_column
+      :count
+    end
+
     def self.random_idx(list)
       ::Random.rand(0..(list.size - 1))
     end
@@ -15,6 +20,10 @@ module Tobanjan
     class FlattenChoicer
       include Singleton
 
+      def choice!(candidates)
+        choice_by_column_name!(::Tobanjan::Choicer.default_column, candidates)
+      end
+
       def choice_by_column_name!(column_name, candidates)
         min = candidates.map(&column_name).min
         result = ::Tobanjan::Choicer.choice_from_list(candidates.select{|candidate|candidate.send(column_name) == min})
@@ -25,7 +34,7 @@ module Tobanjan
   end
 
   class ::Tobanjan::CandidateList
-    def self.create(list, columns)
+    def self.create(list, columns=[::Tobanjan::Choicer::default_column])
       list_column_method_names = columns.map {|col| ColumnMethodNames.new(col) }
       candidates = list.map {|elm|
         ::Tobanjan::CandidateList::Candidate.create_with_column_method_names(elm, list_column_method_names)
@@ -35,6 +44,10 @@ module Tobanjan
 
     def initialize(candidates)
       @candidates = candidates
+    end
+
+    def choice!
+      choice_by_column_name!(::Tobanjan::Choicer.default_column)
     end
 
     def choice_by_column_name!(column_name)
