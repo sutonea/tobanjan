@@ -1,9 +1,17 @@
 require "tobanjan/version"
 
+require 'singleton'
+
 module Tobanjan
   module Choicer
     class FlattenChoicer
-      def initialize
+      include Singleton
+
+      def choice_by_column_name!(column_name, candidates)
+        min = candidates.map(&column_name).min
+        result = candidates.select{|candidate|candidate.send(column_name) == min}.sample
+        result.send("increment_#{column_name}".to_sym, 1)
+        result.elm
       end
     end
   end
@@ -22,10 +30,7 @@ module Tobanjan
     end
 
     def choice_by_column_name!(column_name)
-      min = @candidates.map(&column_name).min
-      result = @candidates.select{|candidate|candidate.send(column_name) == min}.sample
-      result.send("increment_#{column_name}".to_sym, 1)
-      result.elm
+      ::Tobanjan::Choicer::FlattenChoicer.instance.choice_by_column_name!(column_name, @candidates)
     end
 
     class ColumnMethodNames
